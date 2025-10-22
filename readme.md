@@ -23,15 +23,12 @@ Implementar un sistema de **prototipos (plantillas)** de recursos de infraestruc
 ---
 
 ## ⚙️ Estructura del Proyecto
-
 📁 prototype-api
 ┣ 📄 app.py # Código principal de la API
 ┣ 📄 README.md # Este archivo
 ┣ 📄 requirements.txt # Dependencias (FastAPI, Uvicorn)
 ┗ 📄 diagram.puml # Diagrama UML del patrón Prototype
 
-php
-Copiar código
 
 ---
 
@@ -89,34 +86,31 @@ PrototypeRegistry "1" o-- "*" VMPrototype
 PrototypeRegistry "1" o-- "*" NetworkPrototype
 PrototypeRegistry "1" o-- "*" StoragePrototype
 @enduml
-🚀 Instalación y Ejecución
+
+
 1️⃣ Clonar el repositorio
-bash
-Copiar código
-git clone https://github.com/tuusuario/prototype-api.git
+git clone https://github.com/AnibalFuentes/patron-prototype.git
 cd prototype-api
+
 2️⃣ Instalar dependencias
-bash
-Copiar código
 pip install fastapi uvicorn pydantic
+
 3️⃣ Ejecutar el servidor
-bash
-Copiar código
 uvicorn app:app --reload --port 8000
+
 4️⃣ Abrir la documentación interactiva
+
 👉 http://127.0.0.1:8000/docs
 
 🔌 Endpoints disponibles
 Método	Ruta	Descripción
 POST	/provision	Clona una plantilla existente y crea una instancia personalizada.
 GET	/provisioned	Lista todos los clones creados durante la ejecución.
-
 🧾 Ejemplos de uso
 ✅ Crear una instancia AWS personalizada
+
 Request:
 
-bash
-Copiar código
 curl -X POST "http://127.0.0.1:8000/provision" \
  -H "Content-Type: application/json" \
  -d '{
@@ -127,10 +121,10 @@ curl -X POST "http://127.0.0.1:8000/provision" \
    "network_overrides": {"region":"us-east-1", "public_ip": true},
    "storage_overrides": {"size_gb": 80}
  }'
+
+
 Response:
 
-json
-Copiar código
 {
   "status": "provisioned",
   "vm": {
@@ -144,19 +138,18 @@ Copiar código
   "network": { "region": "us-east-1", "public_ip": true },
   "storage": { "size_gb": 80, "encrypted": true }
 }
+
 ✅ Crear una instancia GCP (sin overrides)
-bash
-Copiar código
 curl -X POST "http://127.0.0.1:8000/provision" \
  -H "Content-Type: application/json" \
  -d '{
    "provider": "gcp",
    "template_key": "gcp-memopt"
  }'
+
 ✅ Ver recursos clonados
-bash
-Copiar código
 curl -X GET "http://127.0.0.1:8000/provisioned"
+
 🧱 Validaciones implementadas
 Tipo de validación	Descripción	Respuesta
 Estructura JSON	Se valida automáticamente con Pydantic.	422 Unprocessable Entity
@@ -164,14 +157,13 @@ Plantilla no registrada	Si la clave no existe en el registro.	404 Not Found
 Proveedor incoherente	Si provider no coincide en VM, Network y Storage.	400 Bad Request
 Campo override inexistente	El campo no se aplica, pero no lanza error.	Ignorado
 Tipo de dato incorrecto	Ejemplo: provider: 123.	422 Validation Error
-
 🧩 Integración con otros patrones
 Patrón	Función	Relación con Prototype
 Factory Method	Crea recursos concretos por proveedor.	Prototype puede clonar objetos antes de enviarlos a las fábricas.
 Abstract Factory	Agrupa creaciones de familias de objetos (VM + Network + Storage).	Usa prototipos como plantillas base.
 Builder	Permite construir configuraciones paso a paso.	Builder puede clonar prototipos y luego aplicar pasos adicionales.
-
 💬 Ejemplo de flujo completo
+
 El cliente solicita un clon de la plantilla "aws-standard".
 
 La API obtiene los prototipos de VM, Network y Storage desde el PrototypeRegistry.
@@ -183,6 +175,7 @@ Se valida la coherencia del proveedor.
 Se devuelven los objetos clonados con nuevos IDs únicos.
 
 📄 Dependencias
+
 Python 3.9+
 
 FastAPI – Framework para la API REST.
@@ -194,12 +187,14 @@ Pydantic – Validación de modelos de datos.
 UUID / copy – Generación de identificadores y clonación profunda.
 
 📚 Autor
+
 Aníbal Fuentes
 Estudiante de Ingeniería de Sistemas
 Proyecto: Patrones de Diseño — Taller WS4 (Prototype)
 2025
 
 🧠 Créditos y referencias
+
 Gamma, Helm, Johnson, Vlissides. Design Patterns (GoF).
 
 FastAPI Documentation
