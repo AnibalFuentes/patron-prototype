@@ -86,6 +86,7 @@ PrototypeRegistry "1" o-- "*" VMPrototype
 PrototypeRegistry "1" o-- "*" NetworkPrototype
 PrototypeRegistry "1" o-- "*" StoragePrototype
 @enduml
+```
 
 
 1️⃣ Clonar el repositorio
